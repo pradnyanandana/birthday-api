@@ -54,7 +54,6 @@ To run the project, follow these steps:
 
    Set the values for the following environment variables in the `.env` file:
 
-   - `DATABASE_URI`: MongoDB connection URI
    - `DATABASE_URL`: MongoDB connection URL
    - `DATABASE_NAME`: Name of the MongoDB database
 

@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --legacy-watch index.js --exec babel-node",
+    "start": "nodemon --legacy-watch server.js --exec babel-node",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
-    "start_babel": "babel-node ./index.js --preset=babel-preset-es2015",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_babel": "babel-node ./server.js --preset=babel-preset-es2015",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
     "lint-js": "npx eslint --fix --ext .js . || echo \"Formatting done! Please fix the remaining warnings and errors\"",
     "migrate": "cd database && migrate-mongo up"
   },
@@ -30,7 +30,9 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "jest": "^29.5.0",
-    "migrate-mongo": "^10.0.0"
+    "migrate-mongo": "^10.0.0",
+    "supertest": "^6.3.3"
   }
 }
