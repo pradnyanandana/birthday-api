@@ -1,8 +1,10 @@
 import UserRepository from "../repositories/user-repository";
 import ApiError from "../helpers/api-error";
+import AlertService from "./alert-service";
 
 class UserService {
   constructor() {
+    this.alert = new AlertService();
     this.repository = new UserRepository();
   }
 
@@ -13,7 +15,11 @@ class UserService {
       throw ApiError.badRequest("Email exist");
     }
 
-    return await this.repository.store(user);
+    const userSave = await this.repository.store(user);
+
+    this.alert.send(userSave);
+
+    return userSave;
   }
 
   async update(id, user) {
@@ -23,7 +29,12 @@ class UserService {
       throw ApiError.badRequest("Email exist");
     }
 
-    return await this.repository.update(id, user);
+    const userSave = await this.repository.update(id, user);
+
+    this.alert.clear(userSave);
+    this.alert.send(userSave);
+
+    return userSave;
   }
 
   async getUser(id) {

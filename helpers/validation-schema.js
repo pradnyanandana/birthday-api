@@ -1,12 +1,5 @@
 const joi = require("joi").extend(require("@joi/date"));
-const data = require("../helpers/data");
-const { timezones } = data;
-
-let location = [];
-
-timezones.map((tz) => {
-  location = [...location, ...tz.utc];
-});
+const moment = require("moment-timezone");
 
 const register = joi.object({
   first_name: joi.string().required(),
@@ -17,9 +10,9 @@ const register = joi.object({
     .required(),
   location: joi
     .string()
-    .valid(...location)
+    .valid(...moment.tz.names())
     .required(),
-  birthdate: joi.date().format('YYYY-MM-DD').required(),
+  birthdate: joi.date().format("YYYY-MM-DD").required(),
 });
 
 module.exports = {

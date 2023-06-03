@@ -8,6 +8,9 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
+  logger.error(err);
+  console.log(err.message);
+
   return res.status(500).json({
     success: false,
     message: "Something went wrong",
