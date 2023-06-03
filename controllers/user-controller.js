@@ -51,11 +51,13 @@ class UserController {
   async update(req, res, next) {
     try {
       const id = req.params.id;
+      const payload = req.body;
+      const data = await this.service.update(id, payload);
 
       res.json({
         success: true,
         message: "Success update user profile",
-        data: { id },
+        data,
       });
     } catch (error) {
       next(error);
@@ -65,11 +67,11 @@ class UserController {
   async remove(req, res, next) {
     try {
       const id = req.params.id;
+      await this.service.remove(id);
 
       res.json({
         success: true,
-        message: "Success remove user",
-        data: { id },
+        message: "Success remove user"
       });
     } catch (error) {
       next(error);

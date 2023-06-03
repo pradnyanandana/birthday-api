@@ -18,7 +18,7 @@ router.get("/:id", (req, res, next) => {
   userController.profile(req, res, next);
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", validation(schema.register), (req, res, next) => {
   userController.update(req, res, next);
 });
 

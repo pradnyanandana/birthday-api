@@ -48,7 +48,7 @@ class BaseRepository {
     let data = null;
 
     try {
-      data = await this.model.findOne({ [key]: value }).select(this.excludes);
+      data = await this.model.findOne({ [key]: value });
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +57,28 @@ class BaseRepository {
   }
 
   async update(id, update) {
-    return await this.model.update({ _id: id }, update);
+    let data = null;
+
+    try {
+      await this.model.findOneAndUpdate({ id }, update);
+      data = await this.model.findOne({ id });
+    } catch (err) {
+      console.log(err);
+    }
+
+    return data;
+  }
+
+  async delete(id) {
+    let data = null;
+
+    try {
+      data = await this.model.deleteOne({ id });
+    } catch (err) {
+      console.log(err);
+    }
+
+    return data;
   }
 }
 
