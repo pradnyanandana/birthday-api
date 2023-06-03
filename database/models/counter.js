@@ -7,20 +7,22 @@ const CounterSchema = mongoose.Schema({
 
 const counter = mongoose.model("Counters", CounterSchema);
 
-const autoIncrementModelID = function (doc, modelName, next) {
-  counter.findByIdAndUpdate(
-    modelName,
-    { $inc: { seq: 1 } },
-    { new: true, upsert: true },
-    function (error, counter) {
-      if (error) return next(error);
-      doc.id = counter.seq;
-      next();
-    }
-  );
+const autoIncrementModelID = async (doc, modelName, next) => {
+  try {
+    const newCounter = await counter.findByIdAndUpdate(
+      modelName,
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    doc.id = newCounter.seq;
+    next();
+  } catch (error) {
+    return next(error);
+  }
 };
 
-const preSave = function (doc, modelName, next) {
+const preSave = (doc, modelName, next) => {
   if (!doc.isNew) {
     next();
     return;

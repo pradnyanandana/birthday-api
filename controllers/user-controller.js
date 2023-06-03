@@ -6,15 +6,14 @@ class UserController {
   }
 
   async store(req, res, next) {
-    const payload = req.body;
-
-    await this.service.register(payload);
-    
     try {
+      const payload = req.body;
+      const data = await this.service.register(payload);
+
       res.json({
         success: true,
         message: "Success add user",
-        data: payload,
+        data,
       });
     } catch (error) {
       next(error);

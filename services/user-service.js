@@ -1,4 +1,5 @@
 import UserRepository from "../repositories/user-repository";
+import ApiError from "../helpers/api-error";
 
 class UserService {
   constructor() {

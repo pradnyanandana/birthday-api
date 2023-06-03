@@ -24,7 +24,7 @@ class BaseRepository {
     let data = null;
 
     try {
-      data = await this.model.findOne({ _id: id });
+      data = await this.model.findOne({ id });
     } catch (err) {
       console.log(err);
     }
