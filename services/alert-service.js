@@ -30,7 +30,7 @@ class AlertService {
       const offset = moment.utc().tz(user.location)._offset;
       const birthdayAlert = moment
         .utc(`${user.birthdate}`)
-        .set("hour", 1 - offset / 60)
+        .set("hour", 9 - offset / 60)
         .set("year", currentYear);
 
       let diff = birthdayAlert.diff(now, "milisecond");
