@@ -1,18 +1,10 @@
 import moment from "moment-timezone";
 import UserRepository from "../repositories/user-repository";
-import { timezones } from "../helpers/data";
 import axios from "axios";
 
 class AlertService {
   constructor() {
     this.repository = new UserRepository();
-    this.timezones = {};
-
-    timezones.map((tz) => {
-      tz.utc.map((loc) => {
-        this.timezones[loc] = tz.offset;
-      });
-    });
   }
 
   async timeout(callback, time) {
