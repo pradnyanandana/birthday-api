@@ -4,11 +4,23 @@ import axios from "axios";
 
 class AlertService {
   constructor() {
+    const environtment = process.env.NODE_ENV;
+
+    this.hour = 9;
+    this.minute = 0;
+    this.second = 0
+    this.queue = {};
     this.repository = new UserRepository();
+
+    environtment === "production" && this.start();
+  }
+
+  key(user) {
+    return `alert${user.id}`;
   }
 
   async timeout(callback, time) {
-    let max = 2000;
+    let max = 2147483647;
 
     if (time > max) {
       return setTimeout(() => this.timeout(callback, time - max), max);
@@ -18,19 +30,21 @@ class AlertService {
   }
 
   async clear(user) {
-    const qkey = `alert${user.id}`;
-    clearTimeout(queue[qkey]);
+    const qkey = this.key(user);
+    clearTimeout(this.queue[qkey]);
   }
 
   async send(user) {
     try {
-      const qkey = `alert${user.id}`;
+      const qkey = this.key(user);
       const now = moment.utc();
       const currentYear = moment().year();
       const offset = moment.utc().tz(user.location)._offset;
       const birthdayAlert = moment
         .utc(`${user.birthdate}`)
-        .set("hour", 9 - offset / 60)
+        .set("hour", this.hour - offset / 60)
+        .set("minute", this.minute)
+        .set("second", this.second)
         .set("year", currentYear);
 
       let diff = birthdayAlert.diff(now, "milisecond");
@@ -40,36 +54,40 @@ class AlertService {
         diff = birthdayAlert.diff(now, "milisecond");
       }
 
-      const callback = () => {
-        console.log(`Sending email to ${user.email}`);
-
-        axios
-          .post("https://email-service.digitalenvision.com.au/send-email", {
-            email: user.email,
-            message: `Hey, ${user.first_name} ${user.last_name} it's your birthday`,
-          })
-          .then(() => {
-            this.send(user);
-            console.log(`Success send email to ${user.email}`);
-            logger.info(`Success send email to ${user.email}`);
-          })
-          .catch((error) => {
-            console.log(error.message);
-            logger.info(`Send email to ${user.email} error`);
-            logger.error(error);
-
-            /** Retry to send in 24 hours */
-            queue[qkey] = this.timeout(callback, 24 * 3600 * 1000);
-          });
-      };
-
-      queue[qkey] = this.timeout(callback, diff);
+      this.queue[qkey] = this.timeout(() => this.sendEmail(user), diff);
     } catch (err) {
       /** Retry to send in 5 minutes */
       this.timeout(() => {
         this.send(user);
       }, 5 * 60 * 1000);
     }
+  }
+
+  async sendEmail(user) {
+    const qkey = this.key(user);
+    console.log(`Sending email to ${user.email}`);
+
+    axios
+      .post("https://email-service.digitalenvision.com.au/send-email", {
+        email: user.email,
+        message: `Hey, ${user.first_name} ${user.last_name} it's your birthday`,
+      })
+      .then(() => {
+        this.send(user);
+        console.log(`Success send email to ${user.email}`);
+        logger.info(`Success send email to ${user.email}`);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        logger.info(`Send email to ${user.email} error`);
+        logger.error(error);
+
+        /** Retry to send in 24 hours */
+        this.queue[qkey] = this.timeout(
+          () => this.sendEmail(user),
+          24 * 3600 * 1000
+        );
+      });
   }
 
   async start() {

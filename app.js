@@ -37,7 +37,6 @@ logger.stream = {
   },
 };
 
-global.queue = {};
 global.logger = logger;
 
 module.exports = app;

@@ -4,6 +4,7 @@ import AlertService from "./alert-service";
 
 class UserService {
   constructor() {
+    this.environtment = process.env.NODE_ENV;
     this.alert = new AlertService();
     this.repository = new UserRepository();
   }
@@ -17,7 +18,7 @@ class UserService {
 
     const userSave = await this.repository.store(user);
 
-    this.alert.send(userSave);
+    this.environtment === "production" && this.alert.send(userSave);
 
     return userSave;
   }
@@ -31,8 +32,10 @@ class UserService {
 
     const userSave = await this.repository.update(id, user);
 
-    this.alert.clear(userSave);
-    this.alert.send(userSave);
+    if (this.environtment === "production") {
+      this.alert.clear(userSave);
+      this.alert.send(userSave);
+    }
 
     return userSave;
   }
