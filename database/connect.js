@@ -5,7 +5,7 @@ const connect = async () => {
     await mongoose.connect(
       `${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}${
         process.env.NODE_ENV === "test" ? "test" : ""
-      }?retryWrites=true&w=majority`
+      }${process.env.DATABASE_PARAM}`
     );
 
     console.log("Connected to MongoDB @ 27017");
@@ -20,5 +20,5 @@ const disconnect = async () => {
 
 module.exports = {
   connect,
-  disconnect
+  disconnect,
 };

@@ -102,6 +102,7 @@ To run the project, follow these steps:
 
    - `DATABASE_URL`: MongoDB connection URL
    - `DATABASE_NAME`: Name of the MongoDB database
+   - `DATABASE_PARAM`: Additional parameters for the MongoDB connection string. For example: ?retryWrites=true&w=majority
 
 4. Start the application:
 
@@ -112,3 +113,42 @@ To run the project, follow these steps:
    Make sure you have a running instance of MongoDB and provide the appropriate connection details in the `.env` file before starting the application.
 
 The API documentation with Postman can be accessed [here](https://www.postman.com/galactic-firefly-138065/workspace/birthday-reminder/collection/2534395-a92ced8a-d5f1-4ef8-9ac1-21f1ec6fdd54?action=share&creator=2534395).
+
+## Running the Project Using Docker
+
+### Prerequisites
+
+Make sure you have the following dependencies installed on your system:
+
+- Docker
+- Docker Compose
+
+### Environment Variables
+
+Additional environment variables:
+
+- `APP_SERVER_PORT`: The port number for the application server. For example: 8000
+- `DATABASE_PORT`: The port number for the MongoDB database. For example: 27017
+- `DATABASE_LOCAL_PORT`: The local port number for the MongoDB database. For example: 27017
+
+### Running Docker
+
+Follow these steps to run the project on your local machine:
+
+1. Build the Docker image.
+
+   ```shell
+   docker-compose build
+   ```
+
+2. Start the project containers.
+
+   ```shell
+   docker-compose up
+   ```
+
+3. To stop the project, use `Ctrl+C` in the terminal or run the following command:
+
+   ```shell
+   docker-compose down
+   ```

@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $DATABASE_LOCAL_PORT:$DATABASE_PORT
+    volumes:
+      - db:/data/db
+
+  app:
+    depends_on:
+      - mongodb
+    build: .
+    restart: always
+    env_file: ./.env
+    ports:
+      - $APP_SERVER_PORT:$APP_SERVER_PORT
+    environment:
+      - DATABASE_PORT=$DATABASE_PORT
+      - DATABASE_NAME=$DATABASE_NAME
+      - DATABASE_URL=mongodb://mongodb:$DATABASE_PORT
+    volumes:
+      - ./:/app
+      - /node_modules
+
+volumes:
+  db:
