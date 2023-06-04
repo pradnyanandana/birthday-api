@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const mongoose = require("mongoose");
+const database = require("../database/connect");
 const request = require("supertest");
 const app = require("../app");
 const User = require("../database/models/user");
@@ -8,15 +8,12 @@ const User = require("../database/models/user");
 let userId = 0;
 
 beforeAll(async () => {
-  await mongoose.connect(
-    `${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}test?retryWrites=true&w=majority`
-  );
-
+  await database.connect();
   await User.deleteMany();
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
+  await database.disconnect();
 });
 
 describe("Test routes", () => {
@@ -82,9 +79,9 @@ describe("Test routes", () => {
     });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.data.first_name).toBe('Max');
-    expect(res.body.data.last_name).toBe('Doe');
-    expect(res.body.data.email).toBe('maxdoe@example.com');
+    expect(res.body.data.first_name).toBe("Max");
+    expect(res.body.data.last_name).toBe("Doe");
+    expect(res.body.data.email).toBe("maxdoe@example.com");
   });
 
   test("should return all users", async () => {
@@ -98,8 +95,8 @@ describe("Test routes", () => {
     const res = await request(app).get(`/user/${userId}`);
     expect(res.statusCode).toBe(200);
     expect(typeof res.body.data).toBe("object");
-    expect(res.body.data.first_name).toBe('Max');
-    expect(res.body.data.last_name).toBe('Doe');
+    expect(res.body.data.first_name).toBe("Max");
+    expect(res.body.data.last_name).toBe("Doe");
   });
 
   test("should delete user", async () => {

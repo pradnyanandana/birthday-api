@@ -41,13 +41,13 @@ This application follows a specific folder structure and abstraction pattern to 
 
    The `controllers` folder houses the controller files. Controllers are responsible for extracting data from incoming requests.
 
-3. Service
+3. Services
 
-   The `service` folder contains the service layer of the application. Services encapsulate the business logic and provide an abstraction for interacting with the data layer. They receive data from the controllers, perform operations, and communicate with the repository to retrieve or store data.
+   The `services` folder contains the service layer of the application. Services encapsulate the business logic and provide an abstraction for interacting with the data layer. They receive data from the controllers, perform operations, and communicate with the repository to retrieve or store data.
 
-4. Repository
+4. Repositories
 
-   The `repository` folder handles data retrieval and storage operations. It interacts with the MongoDB database using specific models and schemas defined in the `database` folder. The repository layer is responsible for querying the database and returning data to the service layer or storing new data as needed.
+   The `repositories` folder handles data retrieval and storage operations. It interacts with the MongoDB database using specific models and schemas defined in the `database` folder. The repository layer is responsible for querying the database and returning data to the service layer or storing new data as needed.
 
 Other Folders:
 
