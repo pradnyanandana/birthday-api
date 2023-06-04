@@ -29,6 +29,52 @@ A user has the following fields:
 - Birthday date (format: YYYY-MM-DD)
 - Location (timezone specified using the moment.js format)
 
+## Abstraction
+
+This application follows a specific folder structure and abstraction pattern to improve code organization and maintainability. The application architecture includes the following folders:
+
+1. Routes
+
+   The `routes` folder contains the API route handlers. These files define the endpoints and the corresponding HTTP methods for handling incoming requests.
+
+2. Controllers
+
+   The `controllers` folder houses the controller files. Controllers are responsible for extracting data from incoming requests.
+
+3. Service
+
+   The `service` folder contains the service layer of the application. Services encapsulate the business logic and provide an abstraction for interacting with the data layer. They receive data from the controllers, perform operations, and communicate with the repository to retrieve or store data.
+
+4. Repository
+
+   The `repository` folder handles data retrieval and storage operations. It interacts with the MongoDB database using specific models and schemas defined in the `database` folder. The repository layer is responsible for querying the database and returning data to the service layer or storing new data as needed.
+
+Other Folders:
+
+Apart from the core architectural folders, there are several additional folders in the application:
+
+1. database
+
+   The `database` folder contains the MongoDB schema definitions. It includes files that define the structure and properties of the collections used in the application.
+
+2. middleware
+
+   The `middleware` folder holds the middleware functions used in the application. These functions handle tasks such as data validation from incoming requests and error handling.
+
+3. core
+
+   The `core` folder contains configuration files and utility functions necessary for the core functioning of the application. It may include files related to environment variables, logging configuration, and other essential setup requirements.
+
+4. logs
+
+   The `logs` folder is where the application's logs are saved. It provides a centralized location for storing and accessing logs generated during the application's runtime.
+
+5. tests
+
+   The `tests` folder is utilized for testing the application. It contains test files and related utilities for automated testing. These tests help ensure the correctness and reliability of the application's functionality.
+
+For more details about the implementation, please refer to the individual files within each folder.
+
 ## Running the Project
 
 To run the project, follow these steps:
