@@ -29,9 +29,9 @@ A user has the following fields:
 - Birthday date (format: YYYY-MM-DD)
 - Location (timezone specified using the moment.js format)
 
-## Abstraction
+## Folder Structure
 
-This application follows a specific folder structure and abstraction pattern to improve code organization and maintainability. The application architecture includes the following folders:
+This application follows a specific folder structure to improve code organization and maintainability. The application architecture includes the following folders:
 
 1. Routes
 
